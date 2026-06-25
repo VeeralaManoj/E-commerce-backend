@@ -5,10 +5,10 @@ import { AppError } from "../utils/app-error.js";
 import { verifyToken } from "../utils/jwt.js";
 import { asyncHandler } from "./async-handler.js";
 
-export const protect = asyncHandler(async (req: Request, _res: Response, next: NextFunction) => {
+export const authenticateUser = asyncHandler(async (req: Request, _res: Response, next: NextFunction) => {
   const header = req.headers.authorization;
   const bearerToken = header?.startsWith("Bearer ") ? header.slice(7) : undefined;
-  const token = bearerToken || req.cookies?.token;
+  const token = bearerToken || req.cookies?.accessToken || req.cookies?.token;
 
   if (!token) throw new AppError("Authentication required", 401);
 
@@ -21,7 +21,7 @@ export const protect = asyncHandler(async (req: Request, _res: Response, next: N
   next();
 });
 
-export const restrictTo =
+export const authorizeRoles =
   (...roles: UserRole[]) =>
   (req: Request, _res: Response, next: NextFunction) => {
     if (!req.user) throw new AppError("Authentication required", 401);
@@ -29,6 +29,8 @@ export const restrictTo =
     next();
   };
 
-export const adminOnly = restrictTo("admin");
+export const protect = authenticateUser;
+export const restrictTo = authorizeRoles;
+export const adminOnly = authorizeRoles("ADMIN");
 
 export const roles = USER_ROLES;

@@ -10,15 +10,17 @@ const run = async () => {
   const admin = await User.create({
     name: "Admin User",
     email: "admin@example.com",
-    password: "Password123",
-    role: "admin"
+    password: "Password123!",
+    phone: "1000000000",
+    role: "ADMIN"
   });
 
   await User.create({
     name: "Demo Customer",
     email: "customer@example.com",
-    password: "Password123",
-    role: "customer"
+    password: "Password123!",
+    phone: "1000000001",
+    role: "CUSTOMER"
   });
 
   const electronics = await Category.create({

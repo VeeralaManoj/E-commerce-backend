@@ -17,6 +17,6 @@ export const validate =
 
     req.body = parsed.body ?? req.body;
     req.params = parsed.params ?? req.params;
-    req.query = parsed.query ?? req.query;
+    if (parsed.query) Object.assign(req.query, parsed.query);
     next();
   };

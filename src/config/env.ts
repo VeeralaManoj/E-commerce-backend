@@ -11,8 +11,12 @@ const envSchema = z.object({
   // Legacy modules still compile, but the minimal server no longer uses these.
   MONGO_URI: z.string().optional(),
   JWT_SECRET: z.string().default("local-development-jwt-secret"),
-  JWT_EXPIRES_IN: z.string().default("7d"),
+  JWT_ACCESS_EXPIRES_IN: z.string().default("15m"),
+  JWT_REFRESH_EXPIRES_IN: z.string().default("7d"),
+  JWT_EXPIRES_IN: z.string().default("15m"),
   JWT_COOKIE_EXPIRES_DAYS: z.coerce.number().default(7),
+  RESET_PASSWORD_EXPIRES_MINUTES: z.coerce.number().default(10),
+  BCRYPT_SALT_ROUNDS: z.coerce.number().int().min(4).max(15).default(12),
   STRIPE_SECRET_KEY: z.string().optional(),
   STRIPE_WEBHOOK_SECRET: z.string().optional()
 });

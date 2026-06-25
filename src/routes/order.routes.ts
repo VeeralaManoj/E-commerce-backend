@@ -1,7 +1,6 @@
 import { Router } from "express";
 import {
   createOrder,
-  getMyOrders,
   getOrder,
   listOrders,
   updateOrderStatus
@@ -14,7 +13,6 @@ export const orderRoutes = Router();
 
 orderRoutes.use(protect);
 orderRoutes.post("/", validate(createOrderSchema), createOrder);
-orderRoutes.get("/my", getMyOrders);
 orderRoutes.get("/", adminOnly, listOrders);
 orderRoutes.get("/:id", getOrder);
 orderRoutes.patch("/:id/status", adminOnly, validate(updateOrderStatusSchema), updateOrderStatus);
