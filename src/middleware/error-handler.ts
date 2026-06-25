@@ -15,7 +15,12 @@ export const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
   if (error instanceof ZodError) {
     statusCode = 400;
     message = "Validation failed";
-    errors = error.flatten().fieldErrors;
+    errors = error.issues.reduce<Record<string, string[]>>((fieldErrors, issue) => {
+      const path = issue.path.join(".");
+      const key = path.startsWith("body.") ? path.slice(5) : path || "request";
+      fieldErrors[key] = [...(fieldErrors[key] || []), issue.message];
+      return fieldErrors;
+    }, {});
   }
 
   if (error.name === "CastError") {

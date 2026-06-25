@@ -54,7 +54,7 @@ export const getMyOrders = asyncHandler(async (req: Request, res: Response) => {
 export const getOrder = asyncHandler(async (req: Request, res: Response) => {
   const order = await Order.findById(req.params.id).populate("user", "name email");
   if (!order) throw new AppError("Order not found", 404);
-  if (req.user!.role !== "admin" && order.user._id.toString() !== req.user!.id) {
+  if (req.user!.role !== "ADMIN" && order.user._id.toString() !== req.user!.id) {
     throw new AppError("Forbidden", 403);
   }
   res.json({ success: true, order });
